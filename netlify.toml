@@ -1,0 +1,6 @@
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
+```4.  **"Commit new file"** বাটনে ট্যাপ করুন।
