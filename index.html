@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Landing Page</title>
+    <style>
+        /* আপনার সকল CSS কোড এখানে থাকবে */
+        body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: #f2f3f7; color: #333; }
+        .container { max-width: 420px; margin: auto; padding: 10px; }
+        /* ... বাকি সব CSS ... */
+    </style>
+</head>
+<body>
+
+<div class="container" id="login-container">
+    <!-- আপনার লগইন ফর্মের HTML -->
+</div>
+<div class="container" id="task-container"></div>
+
+<div id="custom-alert-overlay">
+    <!-- আপনার পপআপ ও কনফেত্তি ক্যানভাস -->
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // === এই অংশটি পরিবর্তন করা হয়েছে ===
+    // const WORKER_URL = '...';  // এই লাইনের আর প্রয়োজন নেই
+
+    const loginContainer = document.getElementById('login-container');
+    // ... বাকি সব ভ্যারিয়েবল ...
+
+    // ... আপনার বাকি JavaScript কোড ...
+
+    async function loadTasksFromWorker() {
+        taskContainer.innerHTML = '<p style="text-align: center; color: #777;">Loading Tasks...</p>';
+        const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        if (!userInfo || !userInfo.userId) return;
+
+        try {
+            // === এই fetch URL টি পরিবর্তন করা হয়েছে ===
+            // এটি এখন Netlify Function থেকে ডেটা আনবে
+            const response = await fetch(`/.netlify/functions/get-tasks?userId=${userInfo.userId}`);
+            
+            if (!response.ok) {
+                throw new Error('Failed to fetch tasks from server.');
+            }
+            
+            const availableTasks = await response.json();
+            taskContainer.innerHTML = ''; 
+
+            if (availableTasks && availableTasks.length > 0) {
+                availableTasks.forEach(task => {
+                    // ... কার্ড তৈরির কোড ...
+                });
+            } else {
+                taskContainer.innerHTML = '<p style="text-align: center; color: #777;">No new tasks available for you. Please check back later.</p>';
+            }
+        } catch (error) {
+            console.error('Error loading tasks:', error);
+            // আপনার আগের এরর মেসেজটি এখানে দেখানো হচ্ছে
+            taskContainer.innerHTML = `<p style="text-align: center; color: #ff0000;">Could not load tasks. Error: ${error.message}</p>`;
+        }
+    }
+
+    // ... আপনার বাকি সব JavaScript ফাংশন ...
+});
+</script>
+
+</body>
+</html>
